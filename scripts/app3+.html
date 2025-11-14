@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Attendance Recognition con detección y verificación 25 segundos</title>
+
+  <!-- face-api.js (para reconocimiento facial) -->
+  <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
+
+  <!-- TensorFlow.js (COCO-SSD) -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.2/dist/coco-ssd.min.js"></script>
+
+  <!-- Librería open source platform.js (para datos del equipo) -->
+  <script src="https://unpkg.com/platform@1.3.6/platform.js"></script>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 20px;
+    }
+    .webcam-area, .result-area {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 900px;
+      text-align: center;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .comparison-area {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .image-container {
+      flex: 1;
+      text-align: center;
+    }
+    .video-container {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: 640px;
+    }
+    video {
+      width: 100%;
+      border: 1px solid #ddd;
+      display: block;
+    }
+    #detectionCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      border: 1px solid transparent;
+      width: 100%;
+      height: auto; 
+      display: block;
+    }
+    #capturedImage, #displayReferenceImage {
+      max-width: 100%;
+      border: 1px solid #eee;
+      height: 300px;
+      object-fit: contain;
+      display: none;
+    }
+    button {
+      padding: 10px 15px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none; 
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 24px;
+      z-index: 1000;
+    }
+    #processingStatus {
+      margin-top: 10px;
+      font-style: italic;
+      color: #666;
+    }
+    #similarityScore {
+      font-weight: bold;
+      color: #007bff;
+      margin-top: 10px;
+    }
+    #referenceImagesGrid {
+      display: none;
+    }
+    .error-message {
+      color: #dc3545;
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      padding: 10px;
+      border-radius: 4px;
+      margin-top: 10px;
+      text-align: center;
+    }
+    /* Mensajes de estado */
+    #fraudMessage {
+      color: #dc3545;
+      font-weight: bold;
+      display: none;
+      margin-top: 10px;
+    }
+    #observedMessage {
+      color: #ffc107;
+      font-weight: bold;
+      display: none;
+      margin-top: 10px;
+    }
+    #verificationStatus {
+      font-weight: bold;
+      margin-top: 10px;
+      display: none;
+    }
+    #successMessage {
+      color: #28a745;
+      font-weight: bold;
+      display: none;
+      margin-top: 10px;
+    }
+
+    /* Estilos para el div de pruebas */
+    #debugInfo {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 900px;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pantalla de carga -->
+  <div class="loading" id="loadingScreen">Cargando modelos...</div>
+
+  <!-- Área principal de la app -->
+  <div class="webcam-area">
+    <h2>Webcam Feed y Gestión de Imágenes</h2>
+
+    <div class="video-container">
+      <video id="webcamVideo" autoplay playsinline></video>
+      <canvas id="detectionCanvas"></canvas>
+    </div>
+
+    <div id="referenceImagesGrid"></div>
+    
+    <button id="startRecognition">Start Recognition</button>
+    <button id="markAttendance" disabled>Marcar Asistencia Virtual</button>
+
+    <div class="comparison-area">
+      <div class="image-container">
+        <h3>Database Match</h3>
+        <img id="displayReferenceImage" alt="Reference Image">
+      </div>
+      <div class="image-container">
+        <h3>Captured Image</h3>
+        <img id="capturedImage" alt="Captured Frame">
+      </div>
+    </div>
+  </div>
+
+  <div class="result-area">
+    <h2>Resultado</h2>
+    <p id="recognitionResult"></p>
+    <p id="similarityScore"></p>
+    <p id="processingStatus"></p>
+
+    <!-- Mensajes -->
+    <p id="fraudMessage">Intento de fraude, se está informando al administrador</p>
+    <p id="observedMessage">Marcación observada</p>
+    <p id="verificationStatus"></p>
+    <p id="successMessage">¡Marcación exitosa!</p>
+  </div>
+
+  <!-- Div de Pruebas (al final, no altera la lógica previa) -->
+  <div id="debugInfo">
+    <h3>Div de Pruebas - Datos de Conexión/Equipo</h3>
+    <p><strong>IP Pública:</strong> <span id="publicIp"></span></p>
+    <p><strong>IP Local:</strong> <span id="localIp"></span></p>
+    <p><strong>Fecha/Hora (Perú):</strong> <span id="peruTime"></span></p>
+    <p><strong>GPS (lat,lon):</strong> <span id="gpsCoords"></span></p>
+    <p><strong>Dirección aproximada:</strong> <span id="reverseAddress"></span></p>
+    <p><strong>Características del equipo:</strong> <span id="deviceInfo"></span></p>
+  </div>
+
+  <script>
+    // ============================
+    //  Script de la app principal
+    // ============================
+    // Elementos HTML
+    const loadingScreen            = document.getElementById('loadingScreen');
+    const webcamVideo              = document.getElementById('webcamVideo');
+    const detectionCanvas          = document.getElementById('detectionCanvas');
+    const startRecognitionButton   = document.getElementById('startRecognition');
+    const markAttendanceButton     = document.getElementById('markAttendance');
+    const capturedImageDisplay     = document.getElementById('capturedImage');
+    const displayReferenceImage    = document.getElementById('displayReferenceImage');
+    const recognitionResultDisplay = document.getElementById('recognitionResult');
+    const processingStatus         = document.getElementById('processingStatus');
+    const similarityScore          = document.getElementById('similarityScore');
+    const referenceImagesGrid      = document.getElementById('referenceImagesGrid');
+    const fraudMessage             = document.getElementById('fraudMessage');
+    const observedMessage          = document.getElementById('observedMessage');
+    const verificationStatus       = document.getElementById('verificationStatus');
+    const successMessage           = document.getElementById('successMessage');
+
+    // Context para dibujar bounding boxes
+    const detectionCtx = detectionCanvas.getContext('2d');
+
+    // Variables globales (app)
+    let webcamStream         = null;
+    let referenceDescriptors = [];
+    let objectModel          = null;  // COCO-SSD
+    let detectionActive      = false; 
+    let fraudDetected        = false; 
+    let observedDetected     = false; 
+    let recognizedDescriptor = null;  
+    let verifying            = false; 
+    let verificationInterval = null;
+    let accumulatedTime      = 0;     
+    let verificationTime     = 25;    // Verificación 25 seg
+
+    // Clases consideradas como "dispositivos con pantalla"
+    const screenDevices = ['cell phone', 'tv', 'laptop', 'computer monitor'];
+
+    // Endpoints y rutas
+    const listImagesUrl = 'https://www.piramideejecutores.com/recursos/personal/list_images.php';
+    const baseUrl       = 'https://www.piramideejecutores.com/recursos/personal/';
+
+    // 1. Carga inicial de modelos y luego recolección de datos
+    window.addEventListener('load', async () => {
+      loadingScreen.style.display = 'flex';
+      try {
+        await faceapi.nets.ssdMobilenetv1.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights');
+        await faceapi.nets.faceLandmark68Net.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights');
+        await faceapi.nets.faceRecognitionNet.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights');
+
+        objectModel = await cocoSsd.load();
+        console.log('Modelo COCO-SSD cargado correctamente');
+
+        await loadReferenceImages();
+      } catch (error) {
+        console.error('Error cargando modelos:', error);
+        recognitionResultDisplay.textContent = 'Error loading models: ' + error;
+      } finally {
+        loadingScreen.style.display = 'none';
+
+        // Llamada al final: recopilación de datos de la máquina
+        gatherSystemData();
+      }
+    });
+
+    // 2. Carga de imágenes de referencia
+    async function loadReferenceImages() {
+      processingStatus.textContent = 'Cargando imágenes de referencia...';
+      referenceImagesGrid.innerHTML = '';
+      referenceDescriptors = [];
+
+      try {
+        const response = await fetch(listImagesUrl);
+        if (!response.ok) {
+          throw new Error('No se pudo obtener la lista de imágenes.');
+        }
+        const imageNames = await response.json();
+
+        let processedCount = 0;
+        for (let imageName of imageNames) {
+          const imgUrl = baseUrl + imageName;
+          try {
+            const imgElem = new Image();
+            imgElem.src = imgUrl;
+            imgElem.alt = imageName;
+            imgElem.style.objectFit = 'cover';
+            referenceImagesGrid.appendChild(imgElem);
+
+            await imgElem.decode();
+
+            const detection = await faceapi
+              .detectSingleFace(imgElem)
+              .withFaceLandmarks()
+              .withFaceDescriptor();
+
+            if (detection && detection.descriptor) {
+              referenceDescriptors.push({
+                name: imageName,
+                descriptor: detection.descriptor
+              });
+            } else {
+              console.warn(`No se detectó rostro en la imagen: ${imageName}`);
+            }
+          } catch (processError) {
+            console.error(`Error procesando la imagen ${imageName}:`, processError);
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = `No se pudo procesar la imagen ${imageName}`;
+            referenceImagesGrid.appendChild(errorDiv);
+          }
+
+          processedCount++;
+          processingStatus.textContent = `Procesado ${processedCount} / ${imageNames.length}`;
+        }
+
+        processingStatus.textContent = `Imágenes de referencia cargadas: ${referenceDescriptors.length} rostros detectados.`;
+      } catch (error) {
+        console.error('Error cargando imágenes de referencia:', error);
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = `Error al cargar imágenes: ${error.message}`;
+        referenceImagesGrid.appendChild(errorDiv);
+        processingStatus.textContent = 'Error al cargar imágenes de referencia.';
+      }
+    }
+
+    // 3. Iniciar cámara
+    async function startRecognition() {
+      try {
+        webcamStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        webcamVideo.srcObject = webcamStream;
+        
+        webcamVideo.onloadedmetadata = () => {
+          webcamVideo.play();
+          detectionCanvas.width  = webcamVideo.videoWidth;
+          detectionCanvas.height = webcamVideo.videoHeight;
+        };
+
+        markAttendanceButton.disabled = false;
+        startRecognitionButton.disabled = true;
+        detectionActive = true;
+        fraudDetected   = false;
+        observedDetected= false;
+        verifying       = false;
+        accumulatedTime = 0;
+
+        successMessage.style.display   = 'none';
+        fraudMessage.style.display     = 'none';
+        observedMessage.style.display  = 'none';
+        verificationStatus.style.display = 'none';
+
+        detectDevicesInRealTime();
+
+      } catch (error) {
+        console.error("Error accediendo a la webcam:", error);
+        recognitionResultDisplay.textContent = "Error accediendo a la webcam: " + error;
+      }
+    }
+
+    // 4. Detección de dispositivos en tiempo real
+    async function detectDevicesInRealTime() {
+      if (!detectionActive || !objectModel) return;
+      if (fraudDetected || observedDetected) {
+        requestAnimationFrame(detectDevicesInRealTime);
+        return;
+      }
+
+      detectionCtx.clearRect(0, 0, detectionCanvas.width, detectionCanvas.height);
+      detectionCtx.drawImage(webcamVideo, 0, 0, detectionCanvas.width, detectionCanvas.height);
+
+      const predictions = await objectModel.detect(detectionCanvas);
+
+      for (const pred of predictions) {
+        if (pred.score > 0.5) {
+          detectionCtx.beginPath();
+          detectionCtx.lineWidth = 3;
+          detectionCtx.strokeStyle = 'red';
+          detectionCtx.font = '16px Arial';
+          detectionCtx.fillStyle = 'red';
+
+          const [x, y, w, h] = pred.bbox;
+          detectionCtx.strokeRect(x, y, w, h);
+
+          const text = `${pred.class} ${Math.round(pred.score * 100)}%`;
+          detectionCtx.fillText(text, x, y > 20 ? y - 5 : 10);
+
+          // Si detectamos algún dispositivo => fraude
+          if (screenDevices.includes(pred.class.toLowerCase())) {
+            handleFraudAttempt("Dispositivo electrónico detectado.");
+          }
+        }
+      }
+
+      requestAnimationFrame(detectDevicesInRealTime);
+    }
+
+    // 5. Manejo de fraude
+    function handleFraudAttempt(msg = "Intento de fraude detectado.") {
+      fraudDetected = true; 
+      fraudMessage.textContent = msg;
+      fraudMessage.style.display = 'block';
+      recognitionResultDisplay.textContent = msg;
+      verificationStatus.style.display = 'none';
+      successMessage.style.display = 'none';
+      observedMessage.style.display = 'none';
+
+      // Captura de evidencia
+      const fraudCanvas = document.createElement('canvas');
+      fraudCanvas.width  = webcamVideo.videoWidth;
+      fraudCanvas.height = webcamVideo.videoHeight;
+      const tempCtx = fraudCanvas.getContext('2d');
+      tempCtx.drawImage(webcamVideo, 0, 0);
+
+      const dataUrl = fraudCanvas.toDataURL('image/png');
+      capturedImageDisplay.src = dataUrl;
+      capturedImageDisplay.style.display = 'block';
+
+      markAttendanceButton.disabled = true;
+
+      if (verificationInterval) {
+        clearInterval(verificationInterval);
+        verificationInterval = null;
+      }
+    }
+
+    // 6. Marcación observada
+    function handleObservedAttempt(msg = "Marcación observada") {
+      observedDetected = true; 
+      observedMessage.textContent = msg;
+      observedMessage.style.display = 'block';
+      recognitionResultDisplay.textContent = msg;
+      verificationStatus.style.display = 'none';
+      successMessage.style.display = 'none';
+
+      // Captura de evidencia
+      const obsCanvas = document.createElement('canvas');
+      obsCanvas.width  = webcamVideo.videoWidth;
+      obsCanvas.height = webcamVideo.videoHeight;
+      const tempCtx = obsCanvas.getContext('2d');
+      tempCtx.drawImage(webcamVideo, 0, 0);
+
+      const dataUrl = obsCanvas.toDataURL('image/png');
+      capturedImageDisplay.src = dataUrl;
+      capturedImageDisplay.style.display = 'block';
+
+      markAttendanceButton.disabled = true;
+
+      if (verificationInterval) {
+        clearInterval(verificationInterval);
+        verificationInterval = null;
+      }
+    }
+
+    // 7. Marcar asistencia
+    async function markAttendance() {
+      if (fraudDetected || observedDetected) {
+        recognitionResultDisplay.textContent = "No se puede marcar asistencia. Se detectó anomalía.";
+        return;
+      }
+      if (!webcamVideo.srcObject) {
+        recognitionResultDisplay.textContent = "Asegúrate de haber iniciado la webcam.";
+        return;
+      }
+      if (referenceDescriptors.length === 0) {
+        recognitionResultDisplay.textContent = "Por favor, espera a que se carguen las imágenes de referencia.";
+        return;
+      }
+
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width  = webcamVideo.videoWidth;
+      tempCanvas.height = webcamVideo.videoHeight;
+      const tempCtx = tempCanvas.getContext('2d');
+      tempCtx.drawImage(webcamVideo, 0, 0);
+
+      const capturedDataURL = tempCanvas.toDataURL('image/png');
+      capturedImageDisplay.src = capturedDataURL;
+      capturedImageDisplay.style.display = 'block';
+
+      try {
+        const detection = await faceapi
+          .detectSingleFace(tempCanvas)
+          .withFaceLandmarks()
+          .withFaceDescriptor();
+
+        if (!detection) {
+          recognitionResultDisplay.textContent = 'No se detectó ningún rostro en la imagen.';
+          similarityScore.textContent = '';
+          return;
+        }
+
+        let bestMatch = null;
+        let bestDistance = 1.0;
+        for (const ref of referenceDescriptors) {
+          const distance = faceapi.euclideanDistance(ref.descriptor, detection.descriptor);
+          if (distance < bestDistance) {
+            bestDistance = distance;
+            bestMatch = ref;
+          }
+        }
+
+        const similarityPercentage = ((1 - bestDistance) * 100).toFixed(2);
+        similarityScore.textContent = `Similarity: ${similarityPercentage}%`;
+
+        // Umbral ~60% => 0.4
+        if (bestMatch && bestDistance < 0.4) {
+          displayReferenceImage.src = baseUrl + bestMatch.name;
+          displayReferenceImage.style.display = 'block';
+          recognitionResultDisplay.textContent = `¡Rostro reconocido! - ${bestMatch.name}`;
+
+          recognizedDescriptor = bestMatch.descriptor;
+          startVerification25s(); // Verificar 25 seg
+        } else {
+          recognitionResultDisplay.textContent = 'No reconocido';
+          displayReferenceImage.style.display = 'none';
+        }
+
+        processingStatus.textContent = 'Comparación finalizada.';
+      } catch (error) {
+        console.error('Error durante la comparación de rostros:', error);
+        recognitionResultDisplay.textContent = 'Error durante la comparación: ' + error;
+      }
+    }
+
+    // 8. Verificación de 25 segundos
+    function startVerification25s() {
+      verifying = true;
+      accumulatedTime = 0;
+      verificationStatus.style.display = 'block';
+      successMessage.style.display = 'none';
+
+      verificationInterval = setInterval(async () => {
+        if (fraudDetected || observedDetected) {
+          clearInterval(verificationInterval);
+          verificationInterval = null;
+          return;
+        }
+
+        // Toma frame actual
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width  = webcamVideo.videoWidth;
+        tempCanvas.height = webcamVideo.videoHeight;
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCtx.drawImage(webcamVideo, 0, 0);
+
+        try {
+          const faceCheck = await faceapi
+            .detectSingleFace(tempCanvas)
+            .withFaceLandmarks()
+            .withFaceDescriptor();
+
+          if (!faceCheck) {
+            verificationStatus.textContent =
+              `No se detecta el rostro (tiempo acumulado: ${accumulatedTime}s).`;
+            return;
+          }
+
+          // Comparamos con recognizedDescriptor
+          const distance = faceapi.euclideanDistance(
+            recognizedDescriptor,
+            faceCheck.descriptor
+          );
+
+          if (distance > 0.4) {
+            // Cambió el rostro
+            handleObservedAttempt("La persona cambió. Marcación observada.");
+            return;
+          }
+
+          // Sube el contador
+          accumulatedTime++;
+          verificationStatus.textContent =
+            `Verificación en curso. Tiempo acumulado: ${accumulatedTime} seg / ${verificationTime} seg.`;
+
+          // Al llegar a 25 seg => éxito
+          if (accumulatedTime >= verificationTime) {
+            clearInterval(verificationInterval);
+            verificationInterval = null;
+            verificationStatus.style.display = 'none';
+            successMessage.style.display = 'block';
+            verifying = false;
+            markAttendanceButton.disabled = true;
+          }
+        } catch (err) {
+          console.error("Error en verificación cíclica:", err);
+          handleObservedAttempt("Error al verificar el rostro. Marcación observada.");
+        }
+      }, 1000);
+    }
+
+    // ===============================
+    //    RECOLECCIÓN DE DATOS 
+    // ===============================
+    async function gatherSystemData() {
+      getPublicIP();
+      getLocalIP();
+      getPeruTime();
+      getGeoLocation();
+      getDeviceInfo();
+    }
+
+    // A) IP PÚBLICA (ipify)
+    async function getPublicIP() {
+      try {
+        const res = await fetch('https://api64.ipify.org?format=json');
+        const data = await res.json();
+        document.getElementById('publicIp').textContent = data.ip || 'Desconocida';
+      } catch (err) {
+        console.error('Error obteniendo IP pública:', err);
+        document.getElementById('publicIp').textContent = 'Error';
+      }
+    }
+
+    // B) IP LOCAL (WebRTC)
+    function getLocalIP() {
+      const ipSpan = document.getElementById('localIp');
+      try {
+        const pc = new RTCPeerConnection({iceServers:[]});
+        pc.createDataChannel('');
+        pc.onicecandidate = (event) => {
+          if (!event || !event.candidate) return;
+          const candidate = event.candidate.candidate;
+          const ipRegex = /([0-9]{1,3}\.){3}[0-9]{1,3}/;
+          const match = ipRegex.exec(candidate);
+          if (match) {
+            ipSpan.textContent = match[0];
+            pc.close();
+          }
+        };
+        pc.createOffer().then((offer) => {
+          pc.setLocalDescription(offer);
+        }).catch((err) => console.error('Error creando oferta WebRTC:', err));
+      } catch (err) {
+        console.warn('WebRTC local IP no soportada:', err);
+        ipSpan.textContent = 'No disponible';
+      }
+    }
+
+    // C) FECHA/HORA PERÚ
+    async function getPeruTime() {
+      const timeSpan = document.getElementById('peruTime');
+      try {
+        const url = 'https://worldtimeapi.org/api/timezone/America/Lima';
+        const res = await fetch(url);
+        const data = await res.json();
+        timeSpan.textContent = data.datetime || 'No disponible';
+      } catch (err) {
+        console.error('Error obteniendo hora de Perú:', err);
+        timeSpan.textContent = 'Error';
+      }
+    }
+
+    // D) GEOLOCALIZACIÓN + REVERSE GEOCODING (OpenStreetMap)
+    function getGeoLocation() {
+      const gpsSpan = document.getElementById('gpsCoords');
+      const addrSpan = document.getElementById('reverseAddress');
+
+      if (!navigator.geolocation) {
+        gpsSpan.textContent = 'Geolocalización no soportada';
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const lat = pos.coords.latitude.toFixed(6);
+        const lon = pos.coords.longitude.toFixed(6);
+        gpsSpan.textContent = `${lat}, ${lon}`;
+
+        try {
+          const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+          const res = await fetch(url);
+          const data = await res.json();
+          addrSpan.textContent = data.display_name || 'Dirección no encontrada';
+        } catch (err) {
+          console.error('Error reverse geocoding:', err);
+          addrSpan.textContent = 'Error al obtener dirección';
+        }
+      }, (err) => {
+        console.warn('Permiso denegado/No se pudo obtener GPS:', err);
+        gpsSpan.textContent = 'No se pudo obtener ubicación';
+      });
+    }
+
+    // E) CARACTERÍSTICAS DEL EQUIPO (platform.js)
+    function getDeviceInfo() {
+      const infoSpan = document.getElementById('deviceInfo');
+      if (typeof platform === 'undefined') {
+        infoSpan.textContent = 'No se cargó platform.js';
+        return;
+      }
+      const info = [];
+      if (platform.name)    info.push(`Navegador: ${platform.name} (v${platform.version})`);
+      if (platform.os)      info.push(`SO: ${platform.os.toString()}`);
+      if (platform.layout)  info.push(`Layout: ${platform.layout}`);
+      if (platform.product) info.push(`Dispositivo: ${platform.product}`);
+
+      infoSpan.textContent = info.join(' | ') || 'No disponible';
+    }
+  </script>
+</body>
+</html>

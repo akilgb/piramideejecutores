@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta de Satisfacción - Pirámide Ejecutores EIRL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+      .survey-section { padding: 4rem 0; background-color: #f8f9fa; }
+      .survey-container { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+      .iframe-container {
+          position: relative;
+          overflow: hidden;
+          width: 100%;
+          padding-top: 120%; /* Ajusta este valor para cambiar la altura del formulario */
+      }
+      .iframe-container iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          width: 100%;
+          height: 100%;
+          border: none;
+      }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://www.piramideejecutores.com/recursos/logo%20piramide.svg" alt="Pirámide Ejecutores Logo" style="max-height: 50px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="servicios.html">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="contacto.html">Contacto</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="submenu-static" style="padding-top: 80px;">
+        <div class="container">
+            <ul style="display: flex; justify-content: center; list-style: none; padding: 0; margin: 0; gap: 1rem;">
+                <li><a href="reclamaciones.html"><i class="fas fa-comment-alt"></i> Reclamaciones</a></li>
+                <li><a href="aportes.html"><i class="fas fa-hand-holding-heart"></i> Aportes</a></li>
+                <li><a href="denuncias.html"><i class="fas fa-exclamation-circle"></i> Denuncias</a></li>
+                <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ's</a></li>
+                <li><a href="encuesta.html"><i class="fas fa-star"></i> Encuesta de Satisfacción</a></li>
+            </ul>
+        </div>
+    </div>
+    <main class="survey-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="survey-container">
+                        <h2 class="text-center">Encuesta de Satisfacción del Cliente</h2>
+                        <p class="text-muted text-center">Tu opinión es muy valiosa para nosotros. Por favor, tómate un momento para completar esta breve encuesta y ayúdanos a mejorar la calidad de nuestros servicios.</p>
+                        <hr>
+                        <div class="iframe-container">
+                            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScCFUmNckm9OwCxpa-KtOfz5yyYiZxKoV9Akdcfmc4UBIIk2g/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-dark text-white">
+        <div class="container text-center">
+            <p>&copy; 2024 Pirámide Ejecutores EIRL. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

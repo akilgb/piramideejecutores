@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libro de Reclamaciones - Pirámide Ejecutores EIRL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><img src="https://www.piramideejecutores.com/recursos/logo%20piramide.svg" alt="Logo" style="max-height: 50px;"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="servicios.html">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="contacto.html">Contacto</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="submenu-static" style="padding-top: 80px;">
+        <div class="container">
+            <ul style="display: flex; justify-content: center; list-style: none; padding: 0; margin: 0; gap: 1rem;">
+                <li><a href="reclamaciones.html"><i class="fas fa-comment-alt"></i> Reclamaciones</a></li>
+                <li><a href="aportes.html"><i class="fas fa-hand-holding-heart"></i> Aportes</a></li>
+                <li><a href="denuncias.html"><i class="fas fa-exclamation-circle"></i> Denuncias</a></li>
+                <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ's</a></li>
+                <li><a href="encuesta.html"><i class="fas fa-star"></i> Encuesta de Satisfacción</a></li>
+            </ul>
+        </div>
+    </div>
+    <section class="contact-section py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h2 class="section-title text-center mb-4">Libro de Reclamaciones</h2>
+                    <p class="text-center text-muted mb-5">Conforme a lo establecido en el Código de Protección y Defensa del Consumidor, Ley N° 29571, en esta página puede registrar su queja o reclamo sobre un producto o servicio adquirido.</p>
+                    <div class="contact-form mb-4">
+                        <div id="form-message" class="mb-3"></div>
+                        <form id="reclamacionesForm">
+                            <h5 class="mt-4">1. Identificación del Consumidor</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" class="form-control" name="nombre" placeholder="Nombres y Apellidos" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" class="form-control" name="dni" placeholder="DNI / CE" required>
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <input type="text" class="form-control" name="domicilio" placeholder="Domicilio" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <input type="tel" class="form-control" name="telefono" placeholder="Teléfono" required>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <input type="email" class="form-control" name="email" placeholder="Correo Electrónico" required>
+                                </div>
+                            </div>
+                            <h5 class="mt-4">2. Identificación del Bien o Servicio</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Tipo</label><br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="bien_tipo" id="producto" value="Producto" checked/>
+                                        <label class="form-check-label" for="producto">Producto</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="bien_tipo" id="servicio" value="Servicio"/>
+                                        <label class="form-check-label" for="servicio">Servicio</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="number" step="0.01" class="form-control" name="monto" placeholder="Monto Reclamado (S/.)">
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <textarea class="form-control" name="descripcion_bien" rows="2" placeholder="Descripción del Producto o Servicio" required></textarea>
+                                </div>
+                            </div>
+                            <h5 class="mt-4">3. Detalle de la Reclamación</h5>
+                             <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label">Tipo de Reclamación</label><br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="reclamacion_tipo" id="queja" value="Queja" checked/>
+                                        <label class="form-check-label" for="queja">Queja <small class="text-muted">(Disconformidad con la atención)</small></label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="reclamacion_tipo" id="reclamo" value="Reclamo"/>
+                                        <label class="form-check-label" for="reclamo">Reclamo <small class="text-muted">(Disconformidad con el producto/servicio)</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" name="detalle_reclamo" rows="4" placeholder="Detalle del Reclamo o Queja" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" name="pedido_consumidor" rows="3" placeholder="Pedido del Consumidor" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger">Enviar Reclamación</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer mt-auto py-3 bg-dark text-white">
+        <div class="container">
+            <p class="text-center">&copy; 2024 Pirámide Ejecutores EIRL. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('reclamacionesForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const messageDiv = document.getElementById('form-message');
+
+            messageDiv.innerHTML = '<div class="alert alert-info">Enviando...</div>';
+            
+            formData.append('form_type', 'reclamaciones');
+
+            fetch('api/form_handler.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    messageDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                    form.reset();
+                } else {
+                    messageDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                messageDiv.innerHTML = '<div class="alert alert-danger">Ocurrió un error inesperado. Por favor, intente de nuevo.</div>';
+            });
+        });
+    </script>
+</body>
+</html>

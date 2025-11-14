@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reconocimiento de Asistencia (25 segundos) - Psigna</title>
+
+  <!-- Carga de librerías externas -->
+  <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.2/dist/coco-ssd.min.js"></script>
+
+  <!-- Enlace al archivo CSS -->
+  <link rel="stylesheet" href="psigna.css">
+</head>
+<body>
+
+  <!-- Pantalla de carga -->
+  <div class="carga" id="pantallaCarga">Cargando modelos, por favor espere...</div>
+
+  <!-- Área de la app -->
+  <div class="contenedor webcam-area">
+    <h2>Video y Gestión de Imágenes</h2>
+    <div class="contenedor-video">
+      <video id="videoWebcam" autoplay playsinline></video>
+      <canvas id="canvasDeteccion"></canvas>
+    </div>
+
+    <div id="contenedorImagenesRef"></div>
+    
+    <button id="btnIniciar">Iniciar Reconocimiento</button>
+    <button id="btnMarcarAsistencia" disabled>Marcar Asistencia</button>
+
+    <div class="comparacion-area">
+      <div class="contenedor-imagen">
+        <h3>Imagen Referencia</h3>
+        <img id="imagenReferencia" alt="Imagen de Referencia">
+      </div>
+      <div class="contenedor-imagen">
+        <h3>Imagen Capturada</h3>
+        <img id="imagenCapturada" alt="Imagen Capturada">
+      </div>
+    </div>
+  </div>
+
+  <div class="contenedor resultado-area">
+    <h2>Resultado</h2>
+    <p id="resultadoDeteccion"></p>
+    <p id="porcentajeSimilitud"></p>
+    <p id="estadoProcesamiento"></p>
+
+    <!-- Mensajes -->
+    <p id="mensajeFraude">Intento de fraude. Se informará al administrador.</p>
+    <p id="mensajeObservado">Marcación observada (el rostro cambió).</p>
+    <p id="estadoVerificacion"></p>
+    <p id="mensajeExito">¡Marcación exitosa!</p>
+  </div>
+
+  <!-- Se cargan los scripts JavaScript al final del body -->
+  <script src="psigna_main.js"></script>
+  <script src="psigna_ip.js"></script>
+
+  <!--
+      DATOS DE CONEXIÓN (IP Pública y Local)
+      Se conserva para identificar equipo del usuario
+  -->
+  <div class="contenedor" id="areaTestInfo">
+    <h2>Datos de Conexión</h2>
+    <p><strong>IP Pública:</strong> <span id="ipPublica">-</span></p>
+    <p><strong>IP Local (posible):</strong> <span id="ipLocal">-</span></p>
+  </div>
+</body>
+</html>

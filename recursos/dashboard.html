@@ -1,0 +1,352 @@
+<?php
+session_start();
+
+// Si la sesión NO está iniciada, redirige a login
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard Completo</title>
+    <!-- Estilos combinados del segundo script (rediseño) con algunos retoques -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f5;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 8px;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .table-section, .cards-section {
+            margin-top: 20px;
+        }
+        .cards-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .card {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            width: 200px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+        .card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .attendance-count {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: white;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+        /* Para la miniatura en la columna foto_evidencia */
+        .thumb {
+            width: 50px;
+            height: auto;
+        }
+        /* Opcional: estilos para un botón de cerrar sesión */
+        .logout {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .logout:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header con título y (opcional) botón de logout -->
+        <div class="header">
+            <h1>Dashboard</h1>
+            <a class="logout" href="logout.php">Cerrar Sesión</a>
+        </div>
+
+        <!-- Sección de tarjetas (PERSONAL) -->
+        <div class="cards-section" id="cards-section">
+            <!-- Tarjetas de personal generadas dinámicamente -->
+        </div>
+
+        <!-- Sección de tabla de asistencias -->
+        <div class="table-section">
+            <h2>Reporte de Asistencias</h2>
+            <table id="asistenciasTable">
+                <thead>
+                    <tr id="tableHeader">
+                        <!-- Encabezados dinámicos -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Filas de la tabla se generan dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Script principal que combina la lógica -->
+    <script>
+        // Endpoints/rutas ajustadas a tu proyecto
+        const LIST_IMAGES_ENDPOINT = 'recursos/personal/list_images.php';
+        const GET_ASISTENCIAS_ENDPOINT = 'recursos/api/get_asistencias.php';
+        const IMAGE_BASE_PATH = 'recursos/personal/';
+
+        // Objeto para contar asistencias por persona
+        let attendancesByPerson = {};
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard();
+            cargarAsistencias();
+            // Si deseas actualizar asistencias periódicamente, descomenta:
+            // setInterval(cargarAsistencias, 60000);
+        });
+
+        /**
+         * initDashboard():
+         * Carga de imágenes/nombres desde list_images.php y creación de tarjetas en la sección.
+         */
+        async function initDashboard() {
+            try {
+                const response = await fetch(LIST_IMAGES_ENDPOINT);
+                if (!response.ok) throw new Error('Error al obtener datos de imágenes');
+                const data = await response.json();
+
+                const container = document.getElementById('cards-section');
+
+                // Dependiendo de cómo devuelvas la info (array u objeto).
+                // 1) Si es un array de nombres de archivo
+                //    ["juan_perez.jpg", "maria_gomez.jpg", ...]
+                if (Array.isArray(data)) {
+                    data.forEach(fileName => {
+                        const card = createCardFromFileName(fileName);
+                        container.appendChild(card);
+                    });
+                } 
+                // 2) Si es un objeto { id: "Juan Pérez", id2: "María Gómez", ... }
+                else {
+                    Object.keys(data).forEach(personalId => {
+                        const nombre = data[personalId];
+                        const card = createCardFromName(nombre, personalId);
+                        container.appendChild(card);
+                    });
+                }
+            } catch (error) {
+                console.error('Error cargando las tarjetas:', error);
+            }
+        }
+
+        /**
+         * createCardFromFileName():
+         * Crea una tarjeta a partir de un nombre de archivo (ej: "Juan_Perez.jpg")
+         */
+        function createCardFromFileName(fileName) {
+            const personName = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+            const personNameFormatted = personName.replace(/_/g, ' ');
+            
+            const card = document.createElement('div');
+            card.className = 'card';
+            // Guardamos el nombre real como dataset
+            card.dataset.person = personNameFormatted;
+
+            // Imagen
+            const img = document.createElement('img');
+            img.src = IMAGE_BASE_PATH + fileName;
+            img.alt = personNameFormatted;
+
+            // Título
+            const nameHeading = document.createElement('h3');
+            nameHeading.textContent = personNameFormatted;
+
+            card.appendChild(img);
+            card.appendChild(nameHeading);
+
+            return card;
+        }
+
+        /**
+         * createCardFromName():
+         * Crea una tarjeta a partir de un nombre y un ID (por si tu JSON es { "1": "Juan Pérez", ... }).
+         */
+        function createCardFromName(name, personalId) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            // Guardamos el nombre y/o ID en dataset
+            card.dataset.person = name;
+            card.dataset.id = personalId;
+
+            // Podemos generar la ruta de imagen asumiendo que sea "nombre_sin_espacios_en_minusculas.jpg"
+            // Ajusta si tu naming es distinto
+            const imageFileName = name.replace(/\s+/g, '_').toLowerCase() + '.jpg';
+            const imgPath = IMAGE_BASE_PATH + imageFileName;
+
+            // Imagen
+            const img = document.createElement('img');
+            img.src = imgPath;
+            img.alt = name;
+
+            // Título
+            const nameHeading = document.createElement('h3');
+            nameHeading.textContent = name;
+
+            card.appendChild(img);
+            card.appendChild(nameHeading);
+
+            return card;
+        }
+
+        /**
+         * cargarAsistencias():
+         * Consulta get_asistencias.php, renderiza la tabla y actualiza tarjetas con conteo de días.
+         */
+        async function cargarAsistencias() {
+            try {
+                const response = await fetch(GET_ASISTENCIAS_ENDPOINT);
+                if (!response.ok) throw new Error('Error al obtener los datos de asistencias');
+                const asistencias = await response.json();
+
+                const tableHeader = document.getElementById('tableHeader');
+                const tbody = document.querySelector('#asistenciasTable tbody');
+
+                // Limpiar tabla
+                tableHeader.innerHTML = '';
+                tbody.innerHTML = '';
+
+                // Si no hay datos
+                if (!Array.isArray(asistencias) || asistencias.length === 0) {
+                    tableHeader.innerHTML = '<th>No hay datos</th>';
+                    return;
+                }
+
+                // Generar encabezados dinámicamente en base a la primera fila
+                const columnas = Object.keys(asistencias[0]);
+                columnas.forEach(columna => {
+                    const th = document.createElement('th');
+                    th.textContent = columna;
+                    tableHeader.appendChild(th);
+                });
+
+                // Renderizar filas
+                asistencias.forEach(registro => {
+                    const tr = document.createElement('tr');
+                    columnas.forEach(columna => {
+                        const td = document.createElement('td');
+                        if (columna === 'foto_evidencia' && registro[columna]) {
+                            // Determinar si es base64 con cabecera o no
+                            let src;
+                            if (registro[columna].startsWith('data:image/')) {
+                                src = registro[columna];
+                            } else {
+                                src = `data:image/jpeg;base64,${registro[columna]}`;
+                            }
+                            td.innerHTML = `<img src="${src}" alt="Evidencia" class="thumb">`;
+                        } else {
+                            td.textContent = registro[columna];
+                        }
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+
+                // Calcular asistencias por persona y actualizar tarjetas
+                calcularAsistenciasPorPersona(asistencias);
+                updateCardsWithAsistencias();
+            } catch (error) {
+                console.error('Error al cargar asistencias:', error);
+            }
+        }
+
+        /**
+         * calcularAsistenciasPorPersona():
+         * Crea un objeto donde cada llave es el nombre de la persona
+         * y el valor es un Set con las fechas distintas en que asistió.
+         */
+        function calcularAsistenciasPorPersona(asistencias) {
+            attendancesByPerson = {}; // Reiniciar
+            asistencias.forEach(registro => {
+                const name = registro.nombre_personal; // Ajustar si tu campo se llama distinto
+                const fecha = registro.fecha;           // Ajustar si tu campo se llama distinto
+                if (name && fecha) {
+                    if (!attendancesByPerson[name]) {
+                        attendancesByPerson[name] = new Set();
+                    }
+                    attendancesByPerson[name].add(fecha);
+                }
+            });
+        }
+
+        /**
+         * updateCardsWithAsistencias():
+         * Recorre las tarjetas, y si coincide el nombre con las asistencias registradas,
+         * le agrega el texto "Días asistidos: X".
+         */
+        function updateCardsWithAsistencias() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                // Tu dataset contiene 'person' que guardamos en createCardFromFileName o createCardFromName
+                const personName = card.dataset.person;
+
+                // Eliminar contador anterior
+                const existingCount = card.querySelector('.attendance-count');
+                if (existingCount) {
+                    existingCount.remove();
+                }
+
+                // Si hay registro en attendancesByPerson
+                if (attendancesByPerson[personName]) {
+                    const countDiv = document.createElement('div');
+                    countDiv.className = 'attendance-count';
+                    countDiv.textContent = `Días asistidos: ${attendancesByPerson[personName].size}`;
+                    card.appendChild(countDiv);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

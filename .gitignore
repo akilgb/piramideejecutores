@@ -1,0 +1,25 @@
+# Gemini CLI temp files
+.gemini/
+
+# Logs
+error_log
+debug_log.txt
+alfa/error_log
+
+# Archives
+public_html.zip
+recursos/999333.zip
+recursos/personal.zip
+institutorabellz.zip
+models.zip
+
+# Backup
+backup/
+
+# phpBB
+phpbb/cache/
+phpbb/files/
+phpbb/store/
+
+# WordPress
+alfa/wp-config.php

@@ -1,0 +1,138 @@
+body {
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+.contenedor {
+  width: 100%;
+  max-width: 900px;
+  text-align: center;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+.webcam-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.resultado-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.comparacion-area {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.contenedor-imagen {
+  flex: 1;
+  text-align: center;
+}
+.contenedor-video {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 640px;
+}
+video {
+  width: 100%;
+  border: 1px solid #ddd;
+  display: block;
+}
+#canvasDeteccion {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  border: 1px solid transparent;
+  width: 100%;
+  height: auto; 
+  display: block;
+}
+#imagenCapturada, #imagenReferencia {
+  max-width: 100%;
+  border: 1px solid #eee;
+  height: 300px;
+  object-fit: contain;
+  display: none;
+}
+button {
+  padding: 10px 15px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.carga {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: none; 
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 24px;
+  z-index: 1000;
+}
+#estadoProcesamiento {
+  margin-top: 10px;
+  font-style: italic;
+  color: #666;
+}
+#porcentajeSimilitud {
+  font-weight: bold;
+  color: #007bff;
+  margin-top: 10px;
+}
+#contenedorImagenesRef {
+  display: none; /* Oculto para reducir impacto en la UI */
+}
+.mensaje-error {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+  text-align: center;
+}
+/* Mensajes de estado */
+#mensajeFraude {
+  color: #dc3545;
+  font-weight: bold;
+  display: none;
+  margin-top: 10px;
+}
+#mensajeObservado {
+  color: #ffc107;
+  font-weight: bold;
+  display: none;
+  margin-top: 10px;
+}
+#estadoVerificacion {
+  font-weight: bold;
+  margin-top: 10px;
+  display: none;
+}
+#mensajeExito {
+  color: #28a745;
+  font-weight: bold;
+  display: none;
+  margin-top: 10px;
+}

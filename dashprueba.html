@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard de Personal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow: hidden;
+      width: 200px;
+      text-align: center;
+      transition: transform 0.2s;
+      cursor: pointer;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .card .info {
+      padding: 15px;
+    }
+    .card .info h3 {
+      margin: 0;
+      font-size: 1.1em;
+      color: #333;
+    }
+    .attendance-count {
+      font-size: 0.9em;
+      color: #555;
+      margin-top: 5px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 30px 0;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    th, td {
+      text-align: left;
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+    img.thumb {
+      width: 50px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dashboard de Personal</h1>
+  <div class="container" id="cards-container">
+    <!-- Tarjetas de personal se cargarán dinámicamente -->
+  </div>
+
+  <h2>Reporte de Asistencias</h2>
+  <table id="asistenciasTable">
+    <thead>
+      <tr id="tableHeader">
+        <!-- Encabezados se generarán dinámicamente -->
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Filas de la tabla se cargarán dinámicamente -->
+    </tbody>
+  </table>
+
+  <script>
+    const listImagesEndpoint = 'recursos/personal/list_images.php';
+    const imageBasePath = 'recursos/personal/';
+    const asistenciasEndpoint = 'recursos/api/get_asistencias.php';
+
+    async function initDashboard() {
+      try {
+        const response = await fetch(listImagesEndpoint);
+        if (!response.ok) throw new Error('Error al obtener los datos de imágenes');
+        const images = await response.json();
+        const container = document.getElementById('cards-container');
+
+        images.forEach(fileName => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          const personName = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+          card.dataset.person = personName;
+
+          const img = document.createElement('img');
+          img.src = imageBasePath + fileName;
+          img.alt = fileName;
+
+          const infoDiv = document.createElement('div');
+          infoDiv.className = 'info';
+
+          const nameHeading = document.createElement('h3');
+          nameHeading.textContent = personName;
+
+          infoDiv.appendChild(nameHeading);
+          card.appendChild(img);
+          card.appendChild(infoDiv);
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error('Error cargando las tarjetas:', error);
+      }
+    }
+
+    async function cargarAsistencias() {
+      try {
+        const response = await fetch(asistenciasEndpoint);
+        if (!response.ok) throw new Error('Error al obtener los datos de asistencias');
+        const asistencias = await response.json();
+
+        const tableHeader = document.getElementById('tableHeader');
+        const tbody = document.querySelector('#asistenciasTable tbody');
+        tableHeader.innerHTML = '';
+        tbody.innerHTML = '';
+
+        if (!Array.isArray(asistencias) || asistencias.length === 0) {
+          tableHeader.innerHTML = '<th>No hay datos</th>';
+          return;
+        }
+
+        const columnas = Object.keys(asistencias[0]);
+        columnas.forEach(columna => {
+          const th = document.createElement('th');
+          th.textContent = columna;
+          tableHeader.appendChild(th);
+        });
+
+        const attendancesByPerson = {};
+        asistencias.forEach(registro => {
+          const tr = document.createElement('tr');
+          columnas.forEach(columna => {
+            const td = document.createElement('td');
+            if (columna === 'foto_evidencia' && registro[columna]) {
+              let src;
+              if (registro[columna].startsWith('data:image/')) {
+                src = registro[columna];
+              } else {
+                src = `data:image/jpeg;base64,${registro[columna]}`;
+              }
+              td.innerHTML = `<img src="${src}" alt="Evidencia" class="thumb">`;
+            } else {
+              td.textContent = registro[columna];
+            }
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+
+          const name = registro.nombre_personal;
+          const fecha = registro.fecha;
+          if (name && fecha) {
+            if (!attendancesByPerson[name]) {
+              attendancesByPerson[name] = new Set();
+            }
+            attendancesByPerson[name].add(fecha);
+          }
+        });
+
+        updateCardsWithAsistencias(attendancesByPerson);
+      } catch (error) {
+        console.error('Error al cargar asistencias:', error);
+      }
+    }
+
+    function updateCardsWithAsistencias(attendancesByPerson) {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const personName = card.dataset.person;
+        const dates = attendancesByPerson[personName];
+        // Remover elementos previos para evitar duplicados
+        const existingCount = card.querySelector('.attendance-count');
+        if (existingCount) {
+          existingCount.remove();
+        }
+        if (dates) {
+          const infoDiv = card.querySelector('.info');
+          const countDiv = document.createElement('div');
+          countDiv.className = 'attendance-count';
+          countDiv.textContent = `Días asistidos: ${dates.size}`;
+          infoDiv.appendChild(countDiv);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initDashboard();
+      cargarAsistencias();
+      setInterval(cargarAsistencias, 60000);
+    });
+  </script>
+</body>
+</html>

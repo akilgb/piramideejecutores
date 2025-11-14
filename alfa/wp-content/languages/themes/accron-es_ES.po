@@ -1,0 +1,814 @@
+# Translation of Themes - Accron in Spanish (Spain)
+# This file is distributed under the same license as the Themes - Accron package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2024-02-08 14:17:24+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.0-beta.2\n"
+"Language: es\n"
+"Project-Id-Version: Themes - Accron\n"
+
+#. Description of the theme
+#, gp-priority: high
+msgid "Unveil digital excellence with Accron WordPress Theme, a Bootstrap-supported marvel ensuring a perfect LightSpeed score. Experience blazing fast speeds tailored for all business websites, sculpting an online presence that's as efficient as it is elegant. Accron: Where performance meets sophistication, setting a new benchmark for web brilliance. View the demo of Accron Pro https://www.nayrathemes.com/demo/pro/?theme=accron"
+msgstr "Descubre la excelencia digital con el tema de WordPress Accron, una maravilla compatible con Bootstrap que garantiza una puntuación perfecta en LightSpeed. Experimenta velocidades de vértigo adaptadas a todos los sitios web empresariales, esculpiendo una presencia en línea tan eficiente como elegante. Accron: Donde el rendimiento se une a la sofisticación, estableciendo un nuevo punto de referencia para la brillantez en la web. Ver la demostración de Accron Pro https://www.nayrathemes.com/demo/pro/?theme=accron"
+
+#. Theme Name of the theme
+#: footer.php:133
+#, gp-priority: high
+msgid "Accron"
+msgstr "Accron"
+
+#: inc/breadcrumb/breadcrumb.php:137
+msgid "Articles posted by&nbsp;"
+msgstr "Artículos publicados por "
+
+#: inc/breadcrumb/breadcrumb.php:131
+msgid "Posts tagged&nbsp;"
+msgstr "Entradas con la etiqueta "
+
+#: inc/customizer/accron-premium.php:33
+msgid "Show Some Love"
+msgstr "Danos un poco de cariño"
+
+#: inc/customizer/accron-premium.php:29
+msgid "Free Vs Pro"
+msgstr "Gratis vs. Pro"
+
+#: inc/customizer/accron-premium.php:27
+msgid "Get Support"
+msgstr "Obtener soporte"
+
+#: inc/customizer/accron-premium.php:25
+msgid "View Documentation"
+msgstr "Ver la documentación"
+
+#: inc/customizer/accron-premium.php:9 inc/customizer/accron-premium.php:31
+msgid "Upgrade to Pro"
+msgstr "Actualizar a Pro"
+
+#: inc/customizer/accron-header.php:93
+msgid "Header Docker"
+msgstr "Cabecera de Docker"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:778
+msgid "Content Image"
+msgstr "Imagen del contenido"
+
+#: footer.php:133
+msgid "<a href=\"#\">%s</a>"
+msgstr "<a href=\"#\">%s</a>"
+
+#: woocommerce/content-product.php:44
+msgid "out of 5"
+msgstr "de 5"
+
+#: woocommerce/content-product.php:44
+msgid "Rated %s out of 5"
+msgstr "Valorado %s de 5"
+
+#: woocommerce/content-product.php:38
+msgid "Sale"
+msgstr "Oferta"
+
+#: woocommerce/cart/mini-cart.php:154
+msgid "Remove this item"
+msgstr "Eliminar este elemento"
+
+#: woocommerce/cart/mini-cart.php:112 woocommerce/cart/mini-cart.php:213
+msgid "No products in the cart."
+msgstr "No hay productos en el carrito."
+
+#: woocommerce/cart/mini-cart.php:105 woocommerce/cart/mini-cart.php:206
+msgid "Checkout"
+msgstr "Finalizar compra"
+
+#: woocommerce/cart/mini-cart.php:104 woocommerce/cart/mini-cart.php:205
+msgid "View Cart"
+msgstr "Ver carrito"
+
+#: woocommerce/cart/mini-cart.php:103 woocommerce/cart/mini-cart.php:204
+msgid "Continue Shopping"
+msgstr "Seguir comprando"
+
+#: woocommerce/cart/mini-cart.php:98 woocommerce/cart/mini-cart.php:199
+msgid "Subtotal"
+msgstr "Subtotal"
+
+#. translators: %s is the product name
+#: woocommerce/cart/mini-cart.php:53
+msgid "Remove %s from cart"
+msgstr "Eliminar %s del carrito"
+
+#. Template Name of the theme
+msgid "Fullwidth Page"
+msgstr "Página a ancho completo"
+
+#. Template Name of the theme
+msgid "Homepage"
+msgstr "Página de inicio"
+
+#: template-parts/sections/section-breadcrumb.php:62
+msgid "Author: %s"
+msgstr "Autor: %s"
+
+#: inc/breadcrumb/breadcrumb.php:141
+#: template-parts/sections/section-breadcrumb.php:58
+msgid "Error 404"
+msgstr "Error 404"
+
+#: template-parts/sections/section-breadcrumb.php:54
+msgid "Tag Archives: %s"
+msgstr "Archivos de la etiqueta %s"
+
+#: template-parts/sections/section-breadcrumb.php:50
+msgid "Category Archives: %s"
+msgstr "Archivos de la categoría %s"
+
+#: template-parts/sections/section-breadcrumb.php:46
+msgid "Yearly Archives: %s"
+msgstr "Archivos anuales: %s"
+
+#: template-parts/sections/section-breadcrumb.php:42
+msgid "Monthly Archives: %s"
+msgstr "Archivos mensuales: %s"
+
+#: template-parts/sections/section-breadcrumb.php:38
+msgid "Daily Archives: %s"
+msgstr "Archivos diarios: %s"
+
+#. translators: %s: Name of current post.
+#: template-parts/content/content.php:31
+msgid "Continue reading %s <span class=\"meta-nav\">&rarr;</span>"
+msgstr "Sigue leyendo %s <span class=\"meta-nav\">&rarr;</span>"
+
+#: template-parts/content/content-search.php:49
+msgid "Read More"
+msgstr "Leer más"
+
+#: template-parts/content/content-search.php:32
+msgid "Comment"
+msgstr "Comentario"
+
+#: template-parts/content/content-page.php:42
+msgid "Read Blog"
+msgstr "Leer el blog"
+
+#: template-parts/content/content-page.php:22
+msgid "Posted By :"
+msgstr "Publicado por:"
+
+#: template-parts/content/content-page.php:21
+msgid "Author Image"
+msgstr "Imagen del autor"
+
+#: template-parts/content/content-none.php:17
+msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
+msgstr "Parece que no encontramos lo que estás buscando. Puede que una búsqueda te ayude a encontrarlo."
+
+#: template-parts/content/content-none.php:15
+msgid "Sorry, but nothing matched your search terms. Please try again with some different keywords."
+msgstr "Lo siento, pero hay nada que coincida con tus términos de búsqueda. Por favor, prueba de nuevo con términos diferentes."
+
+#: template-parts/content/content-none.php:13
+msgid "Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr "¿Listo para publicar tu primera entrada? <a href=\"%1$s\">Empieza aquí</a>."
+
+#: page.php:50 template-parts/content/content.php:36
+msgid "Pages:"
+msgstr "Páginas:"
+
+#. translators: %s: Name of current post
+#: inc/template-tags.php:70
+msgid "Edit %s"
+msgstr "Editar %s"
+
+#. translators: %s: post title
+#: inc/template-tags.php:63
+msgid "Leave a Comment<span class=\"screen-reader-text\"> on %s</span>"
+msgstr "Deja un comentario<span class=\"screen-reader-text\"> en %s</span>"
+
+#: inc/template-tags.php:56
+msgid "Tagged %1$s"
+msgstr "Etiquetado como %1$s"
+
+#: inc/template-tags.php:50
+msgid "Posted in %1$s"
+msgstr "Publicado en %1$s"
+
+#. translators: used between list items, there is a space after the comma
+#: inc/template-tags.php:48 inc/template-tags.php:54
+msgid ", "
+msgstr ", "
+
+#: inc/template-tags.php:33
+msgctxt "post author"
+msgid "by %s"
+msgstr "por %s"
+
+#: inc/template-tags.php:28
+msgctxt "post date"
+msgid "Posted on %s"
+msgstr "Publicado el %s"
+
+#: inc/sidebar/sidebar.php:41
+msgid "This Widget Area For WooCommerce Widget"
+msgstr "Este área de widgets es para el widget de WooCommerce"
+
+#: inc/sidebar/sidebar.php:39
+msgid "WooCommerce Widget Area"
+msgstr "Área de widgets de WooCommerce"
+
+#: inc/sidebar/sidebar.php:31
+msgid "The Footer Widget Area"
+msgstr "Área de widgets del pie de página"
+
+#: inc/sidebar/sidebar.php:21
+msgid "The Primary Widget Area"
+msgstr "Área de widgets principal"
+
+#: inc/sidebar/sidebar.php:19
+msgid "Sidebar Widget Area"
+msgstr "Área de widgets de la barra lateral"
+
+#: inc/extras.php:250
+msgid "or %1$sCustomize theme%2$s</a></span>"
+msgstr "o %1$sPersonalizar tema%2$s</a></span>"
+
+#: inc/extras.php:241
+msgid "Get started with %s"
+msgstr "Empieza con %s"
+
+#: inc/extras.php:236
+msgid "Install and activate %1$sClever Fox%2$s plugin for taking full advantage of all the features this theme has to offer."
+msgstr "Instala y activa el plugin %1$sClever Fox%2$s para aprovechar al máximo todas las características que ofrece este tema."
+
+#. translators: 1: welcome page link starting html tag, 2: welcome page link
+#. ending html tag.
+#: inc/extras.php:232
+msgid "Welcome! Thank you for choosing %1$s!"
+msgstr "¡Bienvenido! ¡Gracias por elegir %1$s!"
+
+#: inc/extras.php:225
+msgid "Theme Screenshot"
+msgstr "Captura de pantalla del tema"
+
+#: inc/extras.php:168
+msgid "View your shopping cart"
+msgstr "Ver el carrito de la compra"
+
+#: inc/extras.php:111 inc/extras.php:177
+msgid "0"
+msgstr "0"
+
+#: inc/customizer/customizer_recommended_plugin.php:22
+msgid "Deactivate"
+msgstr "Desactivar"
+
+#: inc/customizer/customizer_recommended_plugin.php:21
+msgid "Activate"
+msgstr "Activar"
+
+#: inc/customizer/customizer_recommended_plugin.php:20
+msgid "Install and Activate"
+msgstr "Instalar y activar"
+
+#: inc/customizer/customizer_recommended_plugin.php:19
+msgid "Recommended Plugin"
+msgstr "Plugin recomendado"
+
+#: inc/customizer/customizer_recommended_plugin.php:18
+msgid "Recommended Actions"
+msgstr "Acciones recomendadas"
+
+#: inc/customizer/customizer_recommended_plugin.php:14
+msgid "Install and activate <strong>Cleverfox</strong> plugin for taking full advantage of all the features this theme has to offer."
+msgstr "Instala y activa el plugin <strong>Cleverfox</strong> para aprovechar al máximo todas las características que ofrece este tema."
+
+#: inc/customizer/customizer_recommended_plugin.php:10
+msgid "Install and activate <strong>Classic Widget</strong> plugin for taking full advantage of all the features this theme has to offer."
+msgstr "Instala y activa el plugin <strong>Classic Widget</strong> para sacar el máximo partido a todas las características de este tema."
+
+#: inc/customizer/accron-header.php:1121 inc/customizer/accron-header.php:1124
+msgid "Header Sticky Documentation Link"
+msgstr "Enlace de la documentación de la cabecera fija"
+
+#: inc/customizer/accron-header.php:1070 inc/customizer/accron-header.php:1089
+msgid "Sticky Header"
+msgstr "Cabecera fija"
+
+#: inc/customizer/accron-header.php:1038
+msgid "Toggle"
+msgstr "Conmutador"
+
+#: inc/customizer/accron-header.php:999
+msgid "Cart"
+msgstr "Carro"
+
+#: inc/customizer/accron-header.php:960
+msgid "Search"
+msgstr "Buscar"
+
+#: inc/customizer/accron-header.php:939 inc/customizer/accron-header.php:942
+msgid "Header Navigation Documentation Link"
+msgstr "Enlace a la documentación en la navegación de la cabecera"
+
+#: inc/customizer/accron-header.php:907
+msgid "Header Navigation"
+msgstr "Navegación de la cabecera"
+
+#: inc/customizer/accron-header.php:893
+msgid "Page Link"
+msgstr "Enlace de página"
+
+#: inc/customizer/accron-header.php:832 inc/customizer/accron-header.php:835
+msgid "Office Timing Documentation Link"
+msgstr "Enlace a la documentación sobre horarios de oficina"
+
+#: inc/customizer/accron-header.php:800
+msgid "Appointment"
+msgstr "Appointment"
+
+#: inc/customizer/accron-header.php:777
+msgid "Button Link"
+msgstr "Enlace del botón"
+
+#: inc/customizer/accron-header.php:720
+msgid "Office Hours Title"
+msgstr "Título del horario de oficina"
+
+#: inc/customizer/accron-header.php:628 inc/customizer/accron-header.php:739
+msgid "Office Hours"
+msgstr "Horario de oficina"
+
+#: inc/customizer/accron-header.php:528 inc/customizer/accron-header.php:531
+#: inc/customizer/accron-header.php:661 inc/customizer/accron-header.php:664
+msgid "Address Details Documentation Link"
+msgstr "Enlace de la documentación de los detalles de dirección"
+
+#: inc/customizer/accron-header.php:395 inc/customizer/accron-header.php:398
+msgid "Email Details Documentation Link"
+msgstr "Enlace de la documentación de los detalles de correo electrónico"
+
+#: inc/customizer/accron-header.php:261 inc/customizer/accron-header.php:264
+msgid "Mobile Details Documentation Link"
+msgstr "Enlace de la documentación de los detalles del móvil"
+
+#: inc/customizer/accron-header.php:205
+msgid "Instagram Gallery"
+msgstr "Galería de Instagram"
+
+#: inc/customizer/accron-header.php:194 inc/customizer/accron-header.php:197
+msgid "Instagram Documentation Link"
+msgstr "Enlace a la documentación de Instagram"
+
+#: inc/customizer/accron-header.php:150
+msgid "Gallery Title"
+msgstr "Título de la galería"
+
+#: inc/customizer/accron-header.php:131
+msgid "About Description"
+msgstr "Descripción de Acerca"
+
+#: inc/customizer/accron-header.php:112
+msgid "About Text"
+msgstr "Texto de Acerca de"
+
+#: inc/customizer/accron-header.php:74
+msgid "Above Header"
+msgstr "Encima de la cabecera"
+
+#: inc/customizer/accron-header.php:56 inc/customizer/accron-header.php:59
+msgid "Site identity Documentation Link"
+msgstr "Enlace a la documentación de la identidad del sitio"
+
+#: inc/customizer/accron-header.php:24
+msgid "Site Identity"
+msgstr "Identidad del sitio"
+
+#: inc/customizer/accron-general.php:256
+msgid "Container Width"
+msgstr "Ancho del contenedor"
+
+#: inc/customizer/accron-general.php:236
+msgid "Container"
+msgstr "Contenedor"
+
+#: inc/customizer/accron-general.php:212
+msgid "Opacity"
+msgstr "Opacidad"
+
+#: inc/customizer/accron-general.php:192
+msgid "Overlay Color"
+msgstr "Color de superposición"
+
+#: inc/customizer/accron-general.php:128
+msgid "Background"
+msgstr "Fondo"
+
+#: inc/customizer/accron-general.php:107
+msgid "Enable Blur Effect on Breadcrumb?"
+msgstr "¿Activar el efecto de desenfoque en la miga de pan?"
+
+#: inc/customizer/accron-general.php:86
+msgid "Hide / Show Section"
+msgstr "Ocultar / Mostrar sección"
+
+#: inc/customizer/accron-general.php:67
+msgid "Settings"
+msgstr "Ajustes"
+
+#: inc/customizer/accron-general.php:47
+msgid "Breadcrumb"
+msgstr "Migas de pan"
+
+#: inc/customizer/accron-general.php:36
+msgid "Hide / Show Scroller"
+msgstr "Ocultar / Mostrar scroller"
+
+#: inc/customizer/accron-general.php:17
+msgid "Scroller"
+msgstr "Scroller"
+
+#: inc/customizer/accron-general.php:7
+msgid "General"
+msgstr "Generales"
+
+#: inc/customizer/accron-footer.php:394
+msgid "Footer Widget Area"
+msgstr "Área de widgets del pie de página"
+
+#: inc/customizer/accron-footer.php:382 inc/customizer/accron-header.php:606
+msgid "Contact Address"
+msgstr "Dirección del contacto"
+
+#: inc/customizer/accron-footer.php:363 inc/customizer/accron-header.php:587
+msgid "Address Title"
+msgstr "Título de la dirección"
+
+#: inc/customizer/accron-footer.php:305 inc/customizer/accron-header.php:495
+msgid "Address"
+msgstr "Dirección"
+
+#: inc/customizer/accron-footer.php:285 inc/customizer/accron-header.php:473
+msgid "Email Address"
+msgstr "Dirección de correo electrónico"
+
+#: inc/customizer/accron-footer.php:266 inc/customizer/accron-header.php:454
+msgid "Email Title"
+msgstr "Título del correo electrónico"
+
+#: inc/customizer/accron-footer.php:208 inc/customizer/accron-header.php:362
+msgid "Email"
+msgstr "Correo electrónico"
+
+#: inc/customizer/accron-footer.php:188 inc/customizer/accron-header.php:339
+msgid "Phone Number"
+msgstr "Número de teléfono"
+
+#: inc/customizer/accron-footer.php:169 inc/customizer/accron-header.php:320
+msgid "Phone Title"
+msgstr "Título del teléfono"
+
+#: inc/customizer/accron-footer.php:131 inc/customizer/accron-footer.php:227
+#: inc/customizer/accron-footer.php:324 inc/customizer/accron-header.php:282
+#: inc/customizer/accron-header.php:416 inc/customizer/accron-header.php:549
+#: inc/customizer/accron-header.php:682 inc/customizer/accron-header.php:853
+#: inc/customizer/accron-header.php:977 inc/customizer/accron-header.php:1016
+#: inc/customizer/accron-header.php:1055 inc/customizer/accron-header.php:1141
+msgid "Hide/Show"
+msgstr "Ocultar/Mostrar"
+
+#: inc/customizer/accron-footer.php:112 inc/customizer/accron-header.php:228
+msgid "Phone"
+msgstr "Teléfono"
+
+#: inc/customizer/accron-footer.php:87 inc/customizer/accron-general.php:146
+msgid "Background Image"
+msgstr "Imagen de fondo"
+
+#: inc/customizer/accron-footer.php:68
+msgid "Contact Footer"
+msgstr "Pie de página de contacto"
+
+#: inc/customizer/accron-footer.php:57
+msgid "Copyright"
+msgstr "Copyright"
+
+#: inc/customizer/accron-footer.php:44
+msgid "Copyright &copy; [current_year] [site_title] | Powered by [theme_author]"
+msgstr "Copyright &copy; [current_year] [site_title] | Funciona gracias a [theme_author]"
+
+#: inc/customizer/accron-footer.php:36
+msgid "Logo"
+msgstr "Logotipo"
+
+#: inc/customizer/accron-footer.php:17
+msgid "Below Footer"
+msgstr "Debajo del pie de página"
+
+#: inc/customizer/accron-footer.php:10 inc/sidebar/sidebar.php:29
+msgid "Footer"
+msgstr "Pie de página"
+
+#: inc/customizer/accron-blog.php:170
+msgid "No of Posts Display"
+msgstr "Nº entradas a mostar"
+
+#: inc/customizer/accron-blog.php:151
+msgid "Content"
+msgstr "Contenido"
+
+#: inc/customizer/accron-blog.php:119
+msgid "Blog"
+msgstr "Blog"
+
+#: inc/customizer/accron-blog.php:98
+msgid "Outstanding Blog"
+msgstr "Blog destacado"
+
+#: inc/customizer/accron-blog.php:77
+msgid "Our Blog"
+msgstr "Nuestro blog"
+
+#: inc/customizer/accron-blog.php:68 inc/customizer/accron-header.php:12
+msgid "Header"
+msgstr "Cabecera"
+
+#: inc/customizer/accron-blog.php:49
+msgid "Hide / Show"
+msgstr "Ocultar / Mostrar"
+
+#: inc/customizer/accron-blog.php:29
+msgid "Setting"
+msgstr "Ajuste"
+
+#: inc/customizer/accron-blog.php:9
+msgid "Blog Section"
+msgstr "Sección de blog"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:919
+msgid "Service 5"
+msgstr "Servicio 5"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:915
+msgid "Service 4"
+msgstr "Servicio 4"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:911
+msgid "Service 3"
+msgstr "Servicio 3"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:907
+msgid "Service 2"
+msgstr "Servicio 2"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:903
+msgid "Service 1"
+msgstr "Servicio 1"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:848
+#: inc/customizer-repeater/class/customizer-repeater-control.php:881
+msgid "Add Icon"
+msgstr "Añadir icono"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:843
+#: inc/customizer-repeater/class/customizer-repeater-control.php:873
+msgid "Remove Icon"
+msgstr "Eliminar icono"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:826
+msgid "Social icons"
+msgstr "Iconos sociales"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:818
+msgid "None"
+msgstr "Ninguno"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:813
+msgid "Image type"
+msgstr "Tipo de imagen"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:802
+msgid "Center"
+msgstr "Centro"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:798
+msgid "Right"
+msgstr "Derecha"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:794
+msgid "Left"
+msgstr "Izquierda"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:790
+msgid "Slide Align"
+msgstr "Alineación de diapositiva"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:752
+#: inc/customizer-repeater/class/customizer-repeater-control.php:781
+msgid "Upload Image"
+msgstr "Subir imagen"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:749
+#: inc/customizer-repeater/class/customizer-repeater-control.php:817
+#: template-parts/sections/section-header.php:280
+msgid "Image"
+msgstr "Imagen"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:714
+msgid "http://fontawesome.io/icons/"
+msgstr "http://fontawesome.io/icons/"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:713
+msgid "Note: Some icons may not be displayed here. You can see the full list of icons at %1$s."
+msgstr "Nota: algunos iconos no se muestran aquí. Puedes ver la lista completa de iconos en %1$s."
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:707
+#: inc/customizer-repeater/class/customizer-repeater-control.php:816
+#: inc/customizer/accron-footer.php:149 inc/customizer/accron-footer.php:246
+#: inc/customizer/accron-footer.php:343 inc/customizer/accron-header.php:300
+#: inc/customizer/accron-header.php:434 inc/customizer/accron-header.php:567
+#: inc/customizer/accron-header.php:700
+msgid "Icon"
+msgstr "Icono"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:696
+msgid "Open link in new tab:"
+msgstr "Abrir enlace en una nueva pestaña:"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:659
+msgid "Delete field"
+msgstr "Borrar campo"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:490
+msgid "Delete %s"
+msgstr "Borrar %s"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:474
+#: inc/customizer-repeater/class/customizer-repeater-control.php:648
+msgid "Designation"
+msgstr "Denominación"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:466
+#: inc/customizer-repeater/class/customizer-repeater-control.php:639
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:456
+#: inc/customizer-repeater/class/customizer-repeater-control.php:523
+msgid "Color"
+msgstr "Color"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:427
+#: inc/customizer-repeater/class/customizer-repeater-control.php:624
+msgid "Video Url"
+msgstr "URL del vídeo"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:413
+#: inc/customizer-repeater/class/customizer-repeater-control.php:611
+#: inc/customizer-repeater/class/customizer-repeater-control.php:840
+#: inc/customizer-repeater/class/customizer-repeater-control.php:862
+msgid "Link"
+msgstr "Enlace"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:402
+#: inc/customizer-repeater/class/customizer-repeater-control.php:601
+msgid "Button Text"
+msgstr "Texto del botón"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:394
+#: inc/customizer-repeater/class/customizer-repeater-control.php:594
+msgid "skills"
+msgstr "habilidades"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:387
+#: inc/customizer-repeater/class/customizer-repeater-control.php:587
+#: inc/customizer/accron-header.php:758 inc/customizer/accron-header.php:873
+msgid "Button Label"
+msgstr "Etiqueta del botón"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:380
+#: inc/customizer-repeater/class/customizer-repeater-control.php:580
+#: inc/customizer/accron-blog.php:130
+msgid "Description"
+msgstr "Descripción"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:372
+#: inc/customizer-repeater/class/customizer-repeater-control.php:572
+msgid "Subtitle 5"
+msgstr "Subtítulo 5"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:364
+#: inc/customizer-repeater/class/customizer-repeater-control.php:564
+msgid "Subtitle 4"
+msgstr "Subtítulo 4"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:356
+#: inc/customizer-repeater/class/customizer-repeater-control.php:556
+msgid "Subtitle 3"
+msgstr "Subtítulo 3"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:348
+#: inc/customizer-repeater/class/customizer-repeater-control.php:548
+msgid "Subtitle 2"
+msgstr "Subtítulo 2"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:340
+#: inc/customizer-repeater/class/customizer-repeater-control.php:539
+#: inc/customizer/accron-blog.php:109
+msgid "Subtitle"
+msgstr "Subtítulo"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:332
+#: inc/customizer-repeater/class/customizer-repeater-control.php:531
+#: inc/customizer/accron-blog.php:88
+msgid "Title"
+msgstr "Título"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:45
+msgid "Customizer Repeater"
+msgstr "Repetidor del personalizador"
+
+#: inc/customizer-repeater/class/customizer-repeater-control.php:40
+msgid "Add new field"
+msgstr "Añadir un nuevo campo"
+
+#: inc/customizer-notify/accron-customizer-notify.php:114
+msgid "Activating"
+msgstr "Activando"
+
+#: inc/class-wp-bootstrap-navwalker.php:385
+msgid "Add a menu"
+msgstr "Añade un menú"
+
+#: inc/breadcrumb/breadcrumb.php:146
+msgid "Page"
+msgstr "Página"
+
+#: inc/breadcrumb/breadcrumb.php:32
+msgid "Search results for"
+msgstr "Resultados de buscar"
+
+#: inc/breadcrumb/breadcrumb.php:26
+msgid "Archive by category"
+msgstr "Archivo por categoría"
+
+#: inc/breadcrumb/breadcrumb.php:6
+msgid "Home"
+msgstr "Inicio"
+
+#: header.php:18
+msgid "Skip to content"
+msgstr "Saltar al contenido"
+
+#: functions.php:44
+msgid "Footer Menu"
+msgstr "Menú de pie de página"
+
+#: functions.php:43
+msgid "Primary Menu"
+msgstr "Menú principal"
+
+#. translators: %1$s opening anchor tag, %2$s closing anchor tag
+#: comments.php:84
+msgid "Write a comment&hellip;"
+msgstr "Deja un comentario&hellip;"
+
+#: comments.php:77
+msgid "Comments are closed."
+msgstr "Los comentarios están cerrados."
+
+#: comments.php:45 comments.php:65
+msgid "Newer Comments"
+msgstr "Comentarios más recientes"
+
+#: comments.php:44 comments.php:64
+msgid "Older Comments"
+msgstr "Comentarios anteriores"
+
+#: comments.php:41 comments.php:62
+msgid "Comment navigation"
+msgstr "Navegación de comentarios"
+
+#: 404.php:19
+msgid "Back To Home"
+msgstr "Volver al inicio"
+
+#. Theme URI of the theme
+#, gp-priority: low
+msgid "https://www.nayrathemes.com/accron-free"
+msgstr "https://www.nayrathemes.com/accron-free"
+
+#. Author URI of the theme
+#, gp-priority: low
+msgid "https://www.nayrathemes.com/"
+msgstr "https://www.nayrathemes.com/"
+
+#. Author of the theme
+#, gp-priority: low
+msgid "Nayra Themes"
+msgstr "Nayra Themes"

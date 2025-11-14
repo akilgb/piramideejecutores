@@ -1,0 +1,22 @@
+# Activar el motor de reescritura de URLs
+RewriteEngine On
+
+# Ignorar archivos y directorios existentes para evitar bucles
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Reescritura para extensiones .html
+# Si se solicita "pagina" y "pagina.html" existe, se sirve internamente.
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# Reescritura para extensiones .php
+# Si se solicita "pagina" y "pagina.php" existe, se sirve internamente.
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php [L]
+
+# Redirección 301 de URLs con extensión a URLs limpias
+# Si un usuario accede a "pagina.php" o "pagina.html", se le redirige a "pagina"
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.(php|html)[\s?]
+RewriteRule ^ /%1 [R=301,L]
